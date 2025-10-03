@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.progra2.mapeo.entity.Calificacion;
 import com.progra2.mapeo.entity.Correo;
 import com.progra2.mapeo.entity.Publicacion;
 import com.progra2.mapeo.entity.Usuario;
+import com.progra2.mapeo.repository.CalificacionRepository;
 import com.progra2.mapeo.repository.CorreoRepository;
 import com.progra2.mapeo.repository.PublicacionRepository;
 import com.progra2.mapeo.repository.UsuarioRepository;
@@ -36,6 +38,9 @@ public class UsuarioService {
 	
 	@Autowired
 	CorreoRepository cr;
+	
+	@Autowired
+	CalificacionRepository calr;
 	
 	// Servicio de LogIn
 	 @PostMapping(path = "/login")
@@ -143,4 +148,49 @@ public class UsuarioService {
 
 		 return cr.save(correo);
 	}
+	 
+	 // SERVICIOS DE CALIFICACION
+	 @GetMapping(path="/buscar/calificacion")
+	 public List<Calificacion> buscarCalificaciones(){
+		 return calr.findAll();
+	 }
+	 
+	 @GetMapping(path="/buscar/calificacion/nombre/{nombre}")
+	 public List<Calificacion> buscarCalificacionesPorNombre(@PathVariable String nombre){
+		 return calr.findByNombre(nombre);
+	 }
+	 
+	 @PostMapping(path = "/guardar/calificacion")
+ 	 public Calificacion guardarCalificaciones (@RequestBody Calificacion calificacion){
+
+		 return calr.save(calificacion);
+	}
+	 
+	 //SERVICIOS PARA CONTAR
+	 @GetMapping(path="/contar")
+	 public int contarUsuarios(){
+		 List<Usuario> usuarios = ur.findAll();
+		 int cantidadUsuarios = usuarios.size();
+		 return cantidadUsuarios;
+	 }
+	 
+	 @GetMapping(path="/contar/publicaciones")
+	 public int contarPublicaciones(){
+		 List<Publicacion> publicaciones = pr.findAll();
+		 int cantidadPublicaciones = publicaciones.size();
+		 return cantidadPublicaciones;
+	 }
+	 
+	 @GetMapping(path="/contar/publicaciones/meGusta")
+	 public int contarMeGusta(){
+		 List<Publicacion> publicaciones = pr.findAll();
+		 int cantidadPublicaciones = 0;
+		 for (Publicacion publicacion : publicaciones) {
+			 if(publicacion.getMeGusta() != null) {
+				 cantidadPublicaciones += publicacion.getMeGusta();
+			 }
+		 }
+		 
+		 return cantidadPublicaciones;
+	 }
 }

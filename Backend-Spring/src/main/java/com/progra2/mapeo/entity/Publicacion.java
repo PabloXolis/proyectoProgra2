@@ -53,9 +53,11 @@ public class Publicacion implements Serializable{
 	@Column(name = "fecha")
 	private Date fecha;
 	
+	@Column(name = "me_gusta")
+	private Integer meGusta;
+	
 	@Column(name = "idusuario")
 	private Integer idusuario;
-
 	
 	
 	public Integer getIdpublicacion() {
@@ -84,6 +86,14 @@ public class Publicacion implements Serializable{
 
 	public Integer getIdusuario() {
 		return idusuario;
+	}
+	
+	public Integer getMeGusta() {
+		return meGusta;
+	}
+
+	public void setMeGusta(Integer meGusta) {
+		this.meGusta = meGusta;
 	}
 
 	public void setIdusuario(Integer idusuario) {
